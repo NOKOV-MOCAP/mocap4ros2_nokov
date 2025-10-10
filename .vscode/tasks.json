@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "launch_nokov",
+            "type": "shell",
+            "command": "ros2 launch mocap4r2_nokov_driver mocap4r2_nokov_driver_launch.py",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Launch nokov server node",
+            "options": {
+                "env": {
+                    "PATH": "/opt/ros/<distro>/bin:${env:PATH}"
+                }
+            }
+        }
+    ]
+}
