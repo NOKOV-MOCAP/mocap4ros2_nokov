@@ -51,7 +51,7 @@ def generate_launch_description():
         executable='mocap4r2_nokov_driver_main',
         output='screen',
         parameters=[LaunchConfiguration('config_file')],
-        prefix = "gdbserver localhost:13000"
+        # prefix = "gdbserver localhost:13000"
     )
 
     # Make the driver node take the 'configure' transition

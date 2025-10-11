@@ -37,12 +37,7 @@ std::mutex mtx;
 NokovDriverNode::NokovDriverNode()
 : ControlledLifecycleNode("mocap4r2_nokov_driver_node")
 {
-  declare_parameter<std::string>("connection_type", "Unicast");
-  declare_parameter<std::string>("server_address", "000.000.000.000");
-  declare_parameter<std::string>("local_address", "000.000.000.000");
-  declare_parameter<std::string>("multicast_address", "000.000.000.000");
-  declare_parameter<uint16_t>("server_command_port", 0);
-  declare_parameter<uint16_t>("server_data_port", 0);
+  declare_parameter<std::string>("server_address", "10.1.1.198");
  
   client.reset(new NokovSDKClient());
   client->SetDataCallback(process_frame_callback, this);
@@ -50,24 +45,6 @@ NokovDriverNode::NokovDriverNode()
 
 NokovDriverNode::~NokovDriverNode()
 {
-}
-
-void NokovDriverNode::set_settings_nokov()
-{
-//   if (connection_type_ == "Multicast") {
-//     client_params.connectionType = ConnectionType::ConnectionType_Multicast;
-//     client_params.multicastAddress = multicast_address_.c_str();
-//   } else if (connection_type_ == "Unicast") {
-//     client_params.connectionType = ConnectionType::ConnectionType_Unicast;
-//   } else {
-//     RCLCPP_FATAL(get_logger(), "Unknown connection type -- options are Multicast, Unicast");
-//     rclcpp::shutdown();
-//   }
-
-//   client_params.serverAddress = server_address_.c_str();
-//   client_params.localAddress = local_address_.c_str();
-//   client_params.serverCommandPort = server_command_port_;
-//   client_params.serverDataPort = server_data_port_;
 }
 
 bool NokovDriverNode::stop_nokov()
@@ -94,32 +71,6 @@ void XINGYING_CALLCONV process_frame_callback(sFrameOfMocapData * data, void * p
   static_cast<NokovDriverNode *>(pUserData)->process_frame(data);
 }
 
-std::chrono::nanoseconds NokovDriverNode::get_nokov_system_latency(sFrameOfMocapData * data)
-{
-//   const bool bSystemLatencyAvailable = data->CameraMidExposureTimestamp != 0;
-
-//   if (bSystemLatencyAvailable) {
-//     const double clientLatencySec =
-//       client->SecondsSinceHostTimestamp(data->CameraMidExposureTimestamp);
-//     const double clientLatencyMillisec = clientLatencySec * 1000.0;
-//     const double transitLatencyMillisec =
-//       client->SecondsSinceHostTimestamp(data->TransmitTimestamp) * 1000.0;
-
-//     const double largeLatencyThreshold = 100.0;
-//     if (clientLatencyMillisec >= largeLatencyThreshold) {
-//       RCLCPP_WARN_THROTTLE(
-//         get_logger(), *this->get_clock(), 500,
-//         "Nokov system latency >%.0f ms: [Transmission: %.0fms, Total: %.0fms]",
-//         largeLatencyThreshold, transitLatencyMillisec, clientLatencyMillisec);
-//     }
-
-//     return round<std::chrono::nanoseconds>(std::chrono::duration<float>{clientLatencySec});
-//   } else {
-//     RCLCPP_WARN_ONCE(get_logger(), "Nokov's system latency not available");
-//     return std::chrono::nanoseconds::zero();
-//   }
-}
-
 void NokovDriverNode::process_frame(sFrameOfMocapData * data)
 {
   if (nullptr == data)
@@ -128,8 +79,6 @@ void NokovDriverNode::process_frame(sFrameOfMocapData * data)
   if (get_current_state().id() != lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE) {
     return;
   }
-  // frame_number_++;
-//   rclcpp::Duration frame_delay = rclcpp::Duration(get_nokov_system_latency(data));
   std::map<int, std::vector<mocap4r2_msgs::msg::Marker>> marker2rb;
   // Markers
   if (mocap4r2_markers_pub_->get_subscription_count() > 0) {
@@ -274,13 +223,9 @@ NokovDriverNode::on_error(const rclcpp_lifecycle::State & state)
 bool
 NokovDriverNode::connect_nokov()
 {
-    RCLCPP_INFO(
-    get_logger(),
-    "Trying to connect to Nokov SDK at %s ...", server_address_.c_str());
-
-    //   client->Disconnect();
-    set_settings_nokov();
-    // client->Initialize((char*)server_address_.c_str());
+    RCLCPP_INFO(get_logger(),"Trying to connect to Nokov SDK at %s ...", server_address_.c_str());
+    
+    client->Uninitialize();
     while(rclcpp::ok() && client->Initialize((char*)server_address_.c_str()))
     {
         RCLCPP_WARN(get_logger(), "Connecting to server again");
@@ -294,27 +239,14 @@ NokovDriverNode::connect_nokov()
 bool
 NokovDriverNode::disconnect_nokov()
 {
-//   void * response;
-//   int nBytes;
-//   if (client->SendMessageAndWait("Disconnect", &response, &nBytes) == ErrorCode_OK) {
-//     client->Disconnect();
-//     RCLCPP_INFO(get_logger(), "[Client] Disconnected");
-//     return true;
-//   } else {
-//     RCLCPP_ERROR(get_logger(), "[Client] Disconnect not successful..");
-//     return false;
-//   }
+  client->Uninitialize();
+  return true;
 }
 
 void
 NokovDriverNode::initParameters()
 {
-  get_parameter<std::string>("connection_type", connection_type_);
   get_parameter<std::string>("server_address", server_address_);
-  get_parameter<std::string>("local_address", local_address_);
-  get_parameter<std::string>("multicast_address", multicast_address_);
-  get_parameter<uint16_t>("server_command_port", server_command_port_);
-  get_parameter<uint16_t>("server_data_port", server_data_port_);
 }
 
 }  // namespace mocap4r2_nokov_driver

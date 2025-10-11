@@ -18,8 +18,8 @@
 // Author: David Vargas Frutos <david.vargas@urjc.es>
 // Author: Francisco Martín <fmrico@urjc.es>
 
-#ifndef MOCAP4R2_OPTITRACK_DRIVER__MOCAP4R2_OPTITRACK_DRIVER_HPP_
-#define MOCAP4R2_OPTITRACK_DRIVER__MOCAP4R2_OPTITRACK_DRIVER_HPP_
+#ifndef MOCAP4R2_NOKOV_DRIVER__MOCAP4R2_NOKOV_DRIVER_HPP_
+#define MOCAP4R2_NOKOV_DRIVER__MOCAP4R2_NOKOV_DRIVER_HPP_
 
 #include <iostream>
 #include <sstream>
@@ -78,7 +78,6 @@ public:
 
   bool connect_nokov();
   bool disconnect_nokov();
-  void set_settings_nokov();
   bool stop_nokov();
   void initParameters();
   
@@ -116,4 +115,4 @@ void XINGYING_CALLCONV process_frame_callback(sFrameOfMocapData * data, void * p
 
 }  // namespace mocap4r2_nokov_driver
 
-#endif  // MOCAP4R2_OPTITRACK_DRIVER__MOCAP4R2_OPTITRACK_DRIVER_HPP_
+#endif  // MOCAP4R2_NOKOV_DRIVER__MOCAP4R2_NOKOV_DRIVER_HPP_
