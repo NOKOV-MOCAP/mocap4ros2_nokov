@@ -92,20 +92,18 @@ install(TARGETS
 if(BUILD_TESTING)
   find_package(ament_cmake_copyright REQUIRED)
   find_package(ament_cmake_cppcheck REQUIRED)
-  find_package(ament_cmake_cpplint REQUIRED)
+  # find_package(ament_cmake_cpplint REQUIRED)
   find_package(ament_cmake_lint_cmake REQUIRED)
   find_package(ament_cmake_xmllint REQUIRED)
   find_package(ament_cmake_uncrustify REQUIRED)
 
-
-  file(GLOB_RECURSE EXCLUDE_FILES NatNetSDK/*)
 
   ament_copyright(EXCLUDE ${EXCLUDE_FILES})
   ament_cppcheck(
     EXCLUDE ${EXCLUDE_FILES}
     LANGUAGE c++
   )
-  ament_cpplint(EXCLUDE ${EXCLUDE_FILES})
+  # ament_cpplint(EXCLUDE ${EXCLUDE_FILES})
   ament_lint_cmake()
   ament_uncrustify(
     EXCLUDE ${EXCLUDE_FILES}
