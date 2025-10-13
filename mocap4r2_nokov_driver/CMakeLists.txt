@@ -11,13 +11,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-set (nokov_sdk_INCLUDE_DIRS nokov_sdk/include)
-set (nokov_sdk_LIB_DIRS nokov_sdk/lib)
+set(nokov_sdk_INCLUDE_DIRS nokov_sdk/include)
+set(nokov_sdk_LIB_DIRS nokov_sdk/lib)
 
-if (${ARCHITECTURE} MATCHES "arm")
-  set(nokov_sdk_LIBRARIES ${CMAKE_CURRENT_SOURCE_DIR}/${nokov_sdk_LIB_DIRS}/armhf/libnokov_sdk.so)    
-elseif (${ARCHITECTURE} MATCHES "aarch")
-  set(nokov_sdk_LIBRARIES ${CMAKE_CURRENT_SOURCE_DIR}/${nokov_sdk_LIB_DIRS}/aarch64/libnokov_sdk.so)  
+if(${ARCHITECTURE} MATCHES "arm")
+  set(nokov_sdk_LIBRARIES ${CMAKE_CURRENT_SOURCE_DIR}/${nokov_sdk_LIB_DIRS}/armhf/libnokov_sdk.so)
+elseif(${ARCHITECTURE} MATCHES "aarch")
+  set(nokov_sdk_LIBRARIES ${CMAKE_CURRENT_SOURCE_DIR}/${nokov_sdk_LIB_DIRS}/aarch64/libnokov_sdk.so)
 else()
   set(nokov_sdk_LIBRARIES ${CMAKE_CURRENT_SOURCE_DIR}/${nokov_sdk_LIB_DIRS}/x64/libnokov_sdk.so)
 endif()
@@ -88,7 +88,6 @@ install(TARGETS
   RUNTIME DESTINATION bin
 )
 
-
 if(BUILD_TESTING)
   find_package(ament_cmake_copyright REQUIRED)
   find_package(ament_cmake_cppcheck REQUIRED)
@@ -96,7 +95,6 @@ if(BUILD_TESTING)
   find_package(ament_cmake_lint_cmake REQUIRED)
   find_package(ament_cmake_xmllint REQUIRED)
   find_package(ament_cmake_uncrustify REQUIRED)
-
 
   ament_copyright(EXCLUDE ${EXCLUDE_FILES})
   ament_cppcheck(
