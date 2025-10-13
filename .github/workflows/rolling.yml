@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
       - name: Setup ROS 2
-        uses: ros-tooling/setup-ros@v0.8
+        uses: ros-tooling/setup-ros@v0.7
         with:
           required-ros-distributions: rolling
       - name: build and test
