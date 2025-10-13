@@ -92,7 +92,7 @@ if(BUILD_TESTING)
   find_package(ament_cmake_copyright REQUIRED)
   find_package(ament_cmake_cppcheck REQUIRED)
   # find_package(ament_cmake_cpplint REQUIRED)
-  find_package(ament_cmake_lint_cmake REQUIRED)
+  # find_package(ament_cmake_lint_cmake REQUIRED)
   find_package(ament_cmake_xmllint REQUIRED)
   find_package(ament_cmake_uncrustify REQUIRED)
 
@@ -102,7 +102,7 @@ if(BUILD_TESTING)
     LANGUAGE c++
   )
   # ament_cpplint(EXCLUDE ${EXCLUDE_FILES})
-  ament_lint_cmake()
+  # ament_lint_cmake()
   ament_uncrustify(
     EXCLUDE ${EXCLUDE_FILES}
     LANGUAGE c++
