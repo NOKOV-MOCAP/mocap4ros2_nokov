@@ -1,3 +1,7 @@
+# mocap4r2_nokov_driver
+
+[![rolling](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yaml/badge.svg)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yaml)
+
 Create workspace:
 ```
 mkdir -p mocap4r2_ws/src && cd mocap4r2_ws/src
