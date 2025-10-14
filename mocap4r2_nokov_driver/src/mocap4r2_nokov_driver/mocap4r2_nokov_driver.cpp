@@ -72,9 +72,10 @@ void XINGYING_CALLCONV process_frame_callback(sFrameOfMocapData * data, void * p
 
 void NokovDriverNode::process_frame(sFrameOfMocapData * data)
 {
-  if (nullptr == data)
-        return;
-  std::lock_guard<std::mutex> lck (mtx);
+  if (nullptr == data){
+    return;
+  }
+  std::lock_guard<std::mutex> lck(mtx);
   if (get_current_state().id() != lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE) {
     return;
   }
@@ -121,7 +122,7 @@ void NokovDriverNode::process_frame(sFrameOfMocapData * data)
       msg.header.stamp = msg_rb.header.stamp;
       msg.header.frame_id = "map";
       msg.frame_number = msg_rb.frame_number;
-      for(int j = 0; j < data->RigidBodies[i].nMarkers; j++){
+      for (int j = 0; j < data->RigidBodies[i].nMarkers; j++){
         mocap4r2_msgs::msg::Marker marker;
         marker.id_type = mocap4r2_msgs::msg::Marker::USE_INDEX;
         marker.marker_index = j;
@@ -221,15 +222,14 @@ NokovDriverNode::on_error(const rclcpp_lifecycle::State & state)
 bool
 NokovDriverNode::connect_nokov()
 {
-    RCLCPP_INFO(get_logger(), "Trying to connect to Nokov SDK at %s ...", server_address_.c_str());
+  RCLCPP_INFO(get_logger(), "Trying to connect to Nokov SDK at %s ...", server_address_.c_str());
 
-    client->Uninitialize();
-    while(rclcpp::ok() && client->Initialize(const_cast<char*>(server_address_.c_str())))
-    {
-        RCLCPP_WARN(get_logger(), "Connecting to server again");
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-    }
-    RCLCPP_WARN(get_logger(), "Connecting SUCCESSFUL");
+  client->Uninitialize();
+  while(rclcpp::ok() && client->Initialize(const_cast<char*>(server_address_.c_str()))){
+      RCLCPP_WARN(get_logger(), "Connecting to server again");
+      std::this_thread::sleep_for(std::chrono::seconds(2));
+  }
+  RCLCPP_WARN(get_logger(), "Connecting SUCCESSFUL");
 
   return true;
 }
