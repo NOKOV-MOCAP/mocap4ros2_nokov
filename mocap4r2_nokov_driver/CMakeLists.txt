@@ -96,10 +96,7 @@ if(BUILD_TESTING)
   find_package(ament_cmake_xmllint REQUIRED)
   find_package(ament_cmake_uncrustify REQUIRED)
 
-  set(EXCLUDE_FILES 
-    "nokov_sdk/*"
-    "*/nokov_sdk/*"
-  )
+  file(GLOB_RECURSE EXCLUDE_FILES nokov_sdk/*)
 
   ament_copyright(EXCLUDE ${EXCLUDE_FILES})
   ament_cppcheck(
