@@ -1,6 +1,6 @@
 # mocap4r2_nokov_driver
 
-[![rolling](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yaml/badge.svg)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yaml)
+[![rolling](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml/badge.svg)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml)
 
 Create workspace:
 ```
