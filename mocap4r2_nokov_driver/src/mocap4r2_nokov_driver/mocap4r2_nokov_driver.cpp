@@ -72,7 +72,7 @@ void XINGYING_CALLCONV process_frame_callback(sFrameOfMocapData * data, void * p
 
 void NokovDriverNode::process_frame(sFrameOfMocapData * data)
 {
-  if (nullptr == data){
+  if (nullptr == data) {
     return;
   }
   std::lock_guard<std::mutex> lck(mtx);
@@ -122,7 +122,7 @@ void NokovDriverNode::process_frame(sFrameOfMocapData * data)
       msg.header.stamp = msg_rb.header.stamp;
       msg.header.frame_id = "map";
       msg.frame_number = msg_rb.frame_number;
-      for (int j = 0; j < data->RigidBodies[i].nMarkers; j++){
+      for (int j = 0; j < data->RigidBodies[i].nMarkers; j++) {
         mocap4r2_msgs::msg::Marker marker;
         marker.id_type = mocap4r2_msgs::msg::Marker::USE_INDEX;
         marker.marker_index = j;
@@ -226,8 +226,8 @@ NokovDriverNode::connect_nokov()
 
   client->Uninitialize();
   while(rclcpp::ok() && client->Initialize(const_cast<char*>(server_address_.c_str()))){
-      RCLCPP_WARN(get_logger(), "Connecting to server again");
-      std::this_thread::sleep_for(std::chrono::seconds(2));
+    RCLCPP_WARN(get_logger(), "Connecting to server again");
+    std::this_thread::sleep_for(std::chrono::seconds(2));
   }
   RCLCPP_WARN(get_logger(), "Connecting SUCCESSFUL");
 
