@@ -38,7 +38,6 @@ NokovDriverNode::NokovDriverNode()
 : ControlledLifecycleNode("mocap4r2_nokov_driver_node")
 {
   declare_parameter<std::string>("server_address", "10.1.1.198");
- 
   client.reset(new NokovSDKClient());
   client->SetDataCallback(process_frame_callback, this);
 }
@@ -94,9 +93,8 @@ void NokovDriverNode::process_frame(sFrameOfMocapData * data)
       marker.translation.x = data->OtherMarkers[i][0] * 0.001f;
       marker.translation.y = data->OtherMarkers[i][1] * 0.001f;
       marker.translation.z = data->OtherMarkers[i][2] * 0.001f;
-    
+
       msg.markers.push_back(marker);
-    
     }
     mocap4r2_markers_pub_->publish(msg);
   }
@@ -223,10 +221,10 @@ NokovDriverNode::on_error(const rclcpp_lifecycle::State & state)
 bool
 NokovDriverNode::connect_nokov()
 {
-    RCLCPP_INFO(get_logger(),"Trying to connect to Nokov SDK at %s ...", server_address_.c_str());
-    
+    RCLCPP_INFO(get_logger(), "Trying to connect to Nokov SDK at %s ...", server_address_.c_str());
+
     client->Uninitialize();
-    while(rclcpp::ok() && client->Initialize((char*)server_address_.c_str()))
+    while(rclcpp::ok() && client->Initialize(const_cast<char*>(server_address_.c_str())))
     {
         RCLCPP_WARN(get_logger(), "Connecting to server again");
         std::this_thread::sleep_for(std::chrono::seconds(2));

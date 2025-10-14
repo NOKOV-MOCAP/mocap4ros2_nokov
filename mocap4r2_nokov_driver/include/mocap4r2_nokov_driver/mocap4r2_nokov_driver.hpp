@@ -80,7 +80,7 @@ public:
   bool disconnect_nokov();
   bool stop_nokov();
   void initParameters();
-  
+
   void process_frame(sFrameOfMocapData * data);
 
 protected:
