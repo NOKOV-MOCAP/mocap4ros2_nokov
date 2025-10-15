@@ -89,24 +89,12 @@ protected:
 
   std::unique_ptr<NokovSDKClient> client;
 
-  std::chrono::nanoseconds get_nokov_system_latency(sFrameOfMocapData * data);
-
-  sServerDescription server_description;
-  sDataDescriptions * data_descriptions{nullptr};
-  sFrameOfMocapData latest_data;
-  sRigidBodyData latest_body_frame_data;
-
   rclcpp_lifecycle::LifecyclePublisher<mocap4r2_msgs::msg::Markers>::SharedPtr
     mocap4r2_markers_pub_;
   rclcpp_lifecycle::LifecyclePublisher<mocap4r2_msgs::msg::RigidBodies>::SharedPtr
     mocap4r2_rigid_body_pub_;
 
-  std::string connection_type_;
   std::string server_address_;
-  std::string local_address_;
-  std::string multicast_address_;
-  uint16_t server_command_port_;
-  uint16_t server_data_port_;
 
   uint32_t frame_number_{0};
 };

@@ -23,11 +23,12 @@ from ament_index_python.packages import get_package_share_directory
 import launch
 
 from launch import LaunchDescription
-from launch.actions import EmitEvent
+from launch.actions import EmitEvent, LogInfo, RegisterEventHandler
 from launch.actions import SetEnvironmentVariable,DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import LifecycleNode
 from launch_ros.events.lifecycle import ChangeState
+from launch_ros.event_handlers import OnStateTransition
 
 import lifecycle_msgs.msg
 from launch.substitutions import LaunchConfiguration, PythonExpression
@@ -40,10 +41,6 @@ def generate_launch_description():
     stdout_linebuf_envvar = SetEnvironmentVariable(
         'RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1')
 
-    # print('')
-    # print('params_file_path: ', params_file_path)
-    # print('')
-
     driver_node = LifecycleNode(
         name='mocap4r2_nokov_driver_node',
         namespace=LaunchConfiguration('namespace'),
@@ -51,7 +48,6 @@ def generate_launch_description():
         executable='mocap4r2_nokov_driver_main',
         output='screen',
         parameters=[LaunchConfiguration('config_file')],
-        # prefix = "gdbserver localhost:13000"
     )
 
     # Make the driver node take the 'configure' transition
@@ -62,11 +58,32 @@ def generate_launch_description():
         )
     )
 
+    activate_after_configure = RegisterEventHandler(
+        OnStateTransition(
+            target_lifecycle_node=driver_node,
+            start_state='configuring',
+            goal_state='inactive',
+            entities=[
+                LogInfo(msg="Node successfully configured, now activating..."),
+                EmitEvent(
+                    event=ChangeState(
+                        lifecycle_node_matcher=launch.events.matchers.matches_action(driver_node),
+                        transition_id=lifecycle_msgs.msg.Transition.TRANSITION_ACTIVATE,
+                    )
+                ),
+            ],
+        )
+    )
+
     # Make the driver node take the 'activate' transition
-    driver_activate_trans_event = EmitEvent(
-       event = ChangeState(
-           lifecycle_node_matcher = launch.events.matchers.matches_action(driver_node),
-           transition_id = lifecycle_msgs.msg.Transition.TRANSITION_ACTIVATE,
+    on_activated = RegisterEventHandler(
+        OnStateTransition(
+            target_lifecycle_node=driver_node,
+            start_state='activating',
+            goal_state='active',
+            entities=[
+                LogInfo(msg="Node successfully activated!"),
+            ],
         )
     )
 
@@ -78,6 +95,7 @@ def generate_launch_description():
     ld.add_action(DeclareLaunchArgument('config_file', default_value=params_file_path))
     ld.add_action(driver_node)
     ld.add_action(driver_configure_trans_event)
-    ld.add_action(driver_activate_trans_event)
+    ld.add_action(activate_after_configure)
+    ld.add_action(on_activated)
 
     return ld
