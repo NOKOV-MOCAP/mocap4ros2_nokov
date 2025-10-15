@@ -225,7 +225,7 @@ NokovDriverNode::connect_nokov()
   RCLCPP_INFO(get_logger(), "Trying to connect to Nokov SDK at %s ...", server_address_.c_str());
 
   client->Uninitialize();
-  while(rclcpp::ok() && client->Initialize(const_cast<char*>(server_address_.c_str()))){
+  while (rclcpp::ok() && client->Initialize(const_cast<char *>(server_address_.c_str()))) {
     RCLCPP_WARN(get_logger(), "Connecting to server again");
     std::this_thread::sleep_for(std::chrono::seconds(2));
   }
