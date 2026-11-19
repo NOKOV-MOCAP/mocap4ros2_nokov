@@ -1,14 +1,16 @@
 # mocap4r2_nokov_driver
 
-[![rolling](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml/badge.svg)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml)
+[![rolling](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml) 
 
-Driver of the Nokov motion capture systems for MOCAP4ROS2 2.0. It follows the
-[writing a driver for a new system](https://mocap4ros2-project.github.io/latest/developer/new_driver.html)
-guide: the node is a `mocap4r2_control::MocapSystemNode`, the lifecycle, the
-start/stop control, the announcement on `/mocap4r2/systems`, the diagnostics,
-the stamps, the frame numbers and the TF come from `mocap4r2_control`, and the
-driver only translates the frames of the Nokov SDK into the MOCAP4ROS2
-messages.
+[![lyrical](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/lyrical.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/lyrical.yml) 
+
+[![kilted](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/kilted.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/kilted.yml) 
+
+[![jazzy](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/jazzy.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/jazzy.yml) 
+
+[![humble](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/humble.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/humble.yml) 
+
+Driver of the Nokov motion capture systems for MOCAP4ROS2.
 
 Create workspace:
 ```
