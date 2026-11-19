@@ -1,0 +1,16 @@
+# Nokov driver (Nokov software with the SDK server running).
+nokov_driver:
+  ros__parameters:
+    server_address: "10.1.1.198"      # Nokov computer
+    timeout: 10.0                     # seconds to connect
+    nominal_frame_rate: 0.0           # cameras frame rate in Hz, 0 when unknown
+    up_axis: "z"                      # "z" (default) or "y", rotated into Z-up
+    frame_id: "mocap"                 # Nokov world (Z-up, metres)
+    publish_markers: true
+    publish_rigid_bodies: true
+    publish_skeletons: true
+    publish_tf: false
+    tf_prefix: ""
+    qos:
+      reliability: "reliable"
+      depth: 10

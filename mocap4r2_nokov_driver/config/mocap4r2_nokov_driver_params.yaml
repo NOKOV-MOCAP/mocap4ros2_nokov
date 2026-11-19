@@ -1,6 +1,0 @@
-mocap4r2_nokov_driver_node:
-  ros__parameters:
-    server_address: "192.168.50.125"
-    qos_history_policy: "keep_all"         # keep_all / keep_last
-    qos_reliability_policy: "reliable"  # best_effort / reliable
-    qos_depth: 5                         # 10 / 100 / 1000
