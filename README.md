@@ -1,14 +1,6 @@
 # mocap4r2_nokov_driver
 
-[![rolling](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml) 
-
-[![lyrical](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/lyrical.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/lyrical.yml) 
-
-[![kilted](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/kilted.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/kilted.yml) 
-
-[![jazzy](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/jazzy.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/jazzy.yml) 
-
-[![humble](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/humble.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/humble.yml) 
+[![rolling](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/rolling.yml) [![lyrical](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/lyrical.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/lyrical.yml) [![kilted](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/kilted.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/kilted.yml) [![jazzy](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/jazzy.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/jazzy.yml) [![humble](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/humble.yml/badge.svg?branch=v2.0)](https://github.com/NOKOV-MOCAP/mocap4ros2_nokov/actions/workflows/humble.yml) 
 
 Driver of the Nokov motion capture systems for MOCAP4ROS2.
 

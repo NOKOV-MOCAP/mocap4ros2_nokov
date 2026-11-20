@@ -40,7 +40,9 @@ namespace
 // frame is only valid during the call.
 void XINGYING_CALLCONV process_frame_callback(sFrameOfMocapData * data, void * pUserData)
 {
-  static_cast<NokovDriver *>(pUserData)->process_frame(data);
+  if (pUserData != nullptr && data != nullptr) {
+    static_cast<NokovDriver *>(pUserData)->process_frame(data);
+  }
 }
 
 // The SDK measures the delay between the capture and the transmission in
@@ -52,7 +54,7 @@ constexpr double kMillisecondsToSeconds = 0.001;
 NokovDriver::NokovDriver(const rclcpp::NodeOptions & options)
 : mocap4r2_control::MocapSystemNode("nokov_driver", "nokov", options)
 {
-  declare_parameter<std::string>("server_address", "10.1.1.198");
+  declare_parameter<std::string>("server_address", "192.168.50.177");
   declare_parameter<double>("nominal_frame_rate", 0.0);
   declare_parameter<double>("timeout", 10.0);
   declare_parameter<std::string>("up_axis", "z");
@@ -129,6 +131,7 @@ NokovDriver::connected() const
 void
 NokovDriver::connect_nokov()
 {
+  running_ = false;
   RCLCPP_INFO(
     get_logger(), "Connecting to the Nokov SDK at %s ...", server_address_.c_str());
 
