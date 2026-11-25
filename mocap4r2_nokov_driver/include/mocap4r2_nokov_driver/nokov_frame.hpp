@@ -83,13 +83,8 @@ struct NokovFrame
 struct NokovBoneDescription
 {
   std::string name;
-  int parent_segment{-1};
+  int parent_id{-1};
 };
-
-// Build the ordered bone table of one skeleton out of its model definition.
-std::vector<NokovBoneDescription> resolve_bones(
-  const std::vector<int> & parent_ids,
-  const std::vector<std::string> & names);
 
 mocap4r2_control::MocapFrame to_mocap_frame(
   const NokovFrame & frame,

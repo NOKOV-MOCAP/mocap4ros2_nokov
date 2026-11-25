@@ -198,16 +198,15 @@ NokovDriver::refresh_descriptions()
           const auto * skeleton = description.Data.SkeletonDescription;
           if (skeleton != nullptr) {
             skeleton_names[skeleton->skeletonID] = std::string(skeleton->szName);
-            std::vector<int> parent_ids;
-            std::vector<std::string> names;
-            parent_ids.reserve(skeleton->nRigidBodies);
-            names.reserve(skeleton->nRigidBodies);
+            std::vector<NokovBoneDescription> bones;
+            bones.reserve(skeleton->nRigidBodies);
             for (int j = 0; j < skeleton->nRigidBodies; ++j) {
               const auto & bone = skeleton->RigidBodies[j];
-              parent_ids.push_back(bone.parentID);
-              names.emplace_back(bone.szName);
+              NokovBoneDescription description;
+              description.name = bone.szName;
+              description.parent_id = bone.parentID > 0 ? bone.parentID : -1;
+              bones.push_back(std::move(description));
             }
-            const auto bones = resolve_bones(parent_ids, names);
             skeleton_bones[skeleton->skeletonID] = std::move(bones);
           }
           break;
@@ -350,10 +349,10 @@ NokovDriver::process_frame(sFrameOfMocapData * data)
     for (int j = 0; j < skeleton.nRigidBodies; ++j) {
       const auto & bone = skeleton.RigidBodyData[j];
       NokovBody segment;
-      segment.id = j + 1;
+      segment.id = bone.ID;
       if (j < static_cast<int>(bones.size())) {
         segment.name = bones[j].name;
-        segment.parent_id = bones[j].parent_segment;
+        segment.parent_id = bones[j].parent_id;
       }
       if (segment.name.empty()) {
         segment.name = std::to_string(segment.id);

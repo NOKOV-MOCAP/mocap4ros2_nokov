@@ -19,12 +19,10 @@
 #include "mocap4r2_nokov_driver/nokov_frame.hpp"
 
 using mocap4r2_nokov_driver::NokovBody;
-using mocap4r2_nokov_driver::NokovBoneDescription;
 using mocap4r2_nokov_driver::NokovFrame;
 using mocap4r2_nokov_driver::NokovMarker;
 using mocap4r2_nokov_driver::NokovSkeleton;
 using mocap4r2_nokov_driver::UpAxis;
-using mocap4r2_nokov_driver::resolve_bones;
 using mocap4r2_nokov_driver::to_mocap_frame;
 
 namespace
@@ -232,67 +230,4 @@ TEST(NokovFrame, PublishesTheSegmentsOfASkeleton)
   EXPECT_TRUE(out.skeletons[0].segments[0].tracking_valid);
   EXPECT_EQ(out.skeletons[0].segments[1].parent_id, 10);
   EXPECT_FALSE(out.skeletons[0].segments[1].tracking_valid);
-}
-
-TEST(NokovFrame, ResolvesParentsThroughTheEBoneEnumeration)
-{
-  const std::vector<int> parent_ids = {0, 2, 2, 53, 2};
-  const std::vector<std::string> names = {"Pelvis", "R.Thigh", "L.Thigh", "R.Shank", "Trunk"};
-
-  const auto bones = resolve_bones(parent_ids, names);
-
-  ASSERT_EQ(bones.size(), 5u);
-  EXPECT_EQ(bones[0].name, "Pelvis");
-  EXPECT_EQ(bones[0].parent_segment, -1);   // The root has no parent number.
-  EXPECT_EQ(bones[1].parent_segment, 1);    // R.Thigh is a child of Pelvis.
-  EXPECT_EQ(bones[2].parent_segment, 1);    // L.Thigh is a child of Pelvis.
-  EXPECT_EQ(bones[3].parent_segment, 2);    // R.Shank is a child of R.Thigh.
-  EXPECT_EQ(bones[4].parent_segment, 1);    // Trunk is a child of Pelvis.
-}
-
-TEST(NokovFrame, LocatesParentsByNumberNotByPosition)
-{
-  const std::vector<int> parent_ids = {0, 2, 53};
-  const std::vector<std::string> names = {"PELVIS", "r.thigh", "R.Shank"};
-
-  const auto bones = resolve_bones(parent_ids, names);
-
-  ASSERT_EQ(bones.size(), 3u);
-  EXPECT_EQ(bones[0].parent_segment, -1);
-  EXPECT_EQ(bones[1].parent_segment, 1);   // Pelvis has number 2, position 1.
-  EXPECT_EQ(bones[2].parent_segment, 2);   // R.Thigh has number 53, position 2.
-}
-
-// A parent that is no bone of the skeleton (or the bone itself) is
-// published as NO_PARENT.
-TEST(NokovFrame, RootsBonesWhoseParentIsOutsideTheSkeleton)
-{
-  const std::vector<int> parent_ids = {99, 53, 0};
-  const std::vector<std::string> names = {"Pelvis", "R.Thigh", "L.Thigh"};
-
-  const auto bones = resolve_bones(parent_ids, names);
-
-  ASSERT_EQ(bones.size(), 3u);
-  EXPECT_EQ(bones[0].parent_segment, -1);   // No bone with number 99.
-  EXPECT_EQ(bones[1].parent_segment, -1);   // R.Thigh names itself: root.
-  EXPECT_EQ(bones[2].parent_segment, -1);   // No parent number.
-}
-
-// The parents of a whole standard model of the system, as reported by the
-// model definition of a real skeleton.
-TEST(NokovFrame, ResolvesTheParentsOfAWholeSkeleton)
-{
-  const std::vector<int> parent_ids = {0, 2, 2, 53, 48, 54, 49, 2, 3, 3, 3, 26, 7, 27, 8};
-  const std::vector<std::string> names = {
-    "Pelvis", "R.Thigh", "L.Thigh", "R.Shank", "L.Shank", "R.Foot", "L.Foot",
-    "Trunk", "Head/Neck", "R.UpperArm", "L.UpperArm", "R.Forearm", "L.Forearm",
-    "R.Hand", "L.Hand"};
-
-  const auto bones = resolve_bones(parent_ids, names);
-
-  ASSERT_EQ(bones.size(), 15u);
-  const std::vector<int> expected = {-1, 1, 1, 2, 3, 4, 5, 1, 8, 8, 8, 10, 11, 12, 13};
-  for (std::size_t i = 0; i < expected.size(); ++i) {
-    EXPECT_EQ(bones[i].parent_segment, expected[i]) << "bone " << i + 1;
-  }
 }

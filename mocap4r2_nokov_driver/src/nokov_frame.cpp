@@ -13,9 +13,7 @@
 // limitations under the License.
 
 #include <algorithm>
-#include <cctype>
 #include <cmath>
-#include <map>
 #include <string>
 #include <utility>
 #include <vector>
@@ -187,129 +185,6 @@ convert_body(
 }
 
 }  // namespace
-
-namespace
-{
-
-// The global number of a bone in the "eBONE" enumeration of the system
-int ebone_id_from_name(const std::string & name)
-{
-  static const std::map<std::string, int> ebone_ids = {
-    {"pelvis", 2},
-    {"spine", 3},
-    {"spine1", 4},
-    {"spine2", 5},
-    {"spine3", 58},
-    {"spine4", 59},
-    {"neck", 44},
-    {"neck1", 45},
-    {"head", 46},
-    {"headend", 47},
-    {"head_end", 47},
-    {"leftshoulder", 6},
-    {"l.shoulder", 6},
-    {"l.upperarm", 7},
-    {"l.forearm", 8},
-    {"l.hand", 9},
-    {"l.thumb1", 10},
-    {"l.thumb2", 11},
-    {"l.thumb3", 12},
-    {"l.index1", 13},
-    {"l.index2", 14},
-    {"l.index3", 15},
-    {"l.middle1", 16},
-    {"l.middle2", 17},
-    {"l.middle3", 18},
-    {"l.ring1", 19},
-    {"l.ring2", 20},
-    {"l.ring3", 21},
-    {"l.pinky1", 22},
-    {"l.pinky2", 23},
-    {"l.pinky3", 24},
-    {"rightshoulder", 25},
-    {"r.shoulder", 25},
-    {"r.upperarm", 26},
-    {"r.forearm", 27},
-    {"r.hand", 28},
-    {"r.thumb1", 29},
-    {"r.thumb2", 30},
-    {"r.thumb3", 31},
-    {"r.index1", 32},
-    {"r.index2", 33},
-    {"r.index3", 34},
-    {"r.middle1", 35},
-    {"r.middle2", 36},
-    {"r.middle3", 37},
-    {"r.ring1", 38},
-    {"r.ring2", 39},
-    {"r.ring3", 40},
-    {"r.pinky1", 41},
-    {"r.pinky2", 42},
-    {"r.pinky3", 43},
-    {"leftupleg", 48},
-    {"l.thigh", 48},
-    {"leftleg", 49},
-    {"l.shank", 49},
-    {"leftfoot", 50},
-    {"l.foot", 50},
-    {"lefttoebase", 51},
-    {"l.ball", 51},
-    {"l.toe", 51},
-    {"rightupleg", 53},
-    {"r.thigh", 53},
-    {"rightleg", 54},
-    {"r.shank", 54},
-    {"rightfoot", 55},
-    {"r.foot", 55},
-    {"righttoebase", 56},
-    {"r.ball", 56},
-    {"r.toe", 56},
-    {"trunk", 3},
-    {"head/neck", 46},
-    {"pelviswrtlab", 1},
-    {"trunkwrtlab", 1},
-  };
-
-  std::string lower;
-  lower.reserve(name.size());
-  for (const char c : name) {
-    lower.push_back(static_cast<char>(std::tolower(static_cast<unsigned char>(c))));
-  }
-  const auto found = ebone_ids.find(lower);
-  return found != ebone_ids.end() ? found->second : 0;
-}
-
-}  // namespace
-
-std::vector<NokovBoneDescription>
-resolve_bones(
-  const std::vector<int> & parent_ids,
-  const std::vector<std::string> & names)
-{
-  std::map<int, int> id_to_index;
-  for (std::size_t i = 0; i < names.size(); ++i) {
-    const int id = ebone_id_from_name(names[i]);
-    if (id != 0) {
-      id_to_index[id] = static_cast<int>(i);
-    }
-  }
-
-  std::vector<NokovBoneDescription> bones;
-  bones.reserve(names.size());
-  for (std::size_t i = 0; i < names.size(); ++i) {
-    NokovBoneDescription bone;
-    bone.name = names[i];
-    // The model definition refers to the parent of a bone by its global
-    // number; translate it into the local numbering.
-    const int parent_id = i < parent_ids.size() ? parent_ids[i] : 0;
-    const auto parent = id_to_index.find(parent_id);
-    if (parent != id_to_index.end() && parent->second != static_cast<int>(i)) {
-      bone.parent_segment = parent->second + 1;
-    }
-    bones.push_back(std::move(bone));
-  }
-  return bones;
-}
 
 mocap4r2_control::MocapFrame
 to_mocap_frame(
